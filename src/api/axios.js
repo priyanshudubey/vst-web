@@ -1,8 +1,11 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
+const baseURL = import.meta.env.PROD ? "/api" : "http://localhost:3000/api";
+
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: baseURL,
+  withCredentials: true,
 });
 
 // 1. Request Interceptor
