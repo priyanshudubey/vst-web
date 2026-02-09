@@ -18,8 +18,8 @@ import api from "../api/axios";
 import logo from "../assets/logo.jpg";
 
 const Login = () => {
-  const [username, setUsername] = useState("vst_admin01");
-  const [password, setPassword] = useState("Into@Inventory#42");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
