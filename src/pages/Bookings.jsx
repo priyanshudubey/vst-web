@@ -6,7 +6,6 @@ import {
   Search,
   Calendar,
   FileText,
-  Truck,
   Pencil,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -86,13 +85,13 @@ const Bookings = () => {
     }
   };
 
-  const handleDispatch = (bookingId) => {
-    openConfirmModal(
-      "dispatch",
-      bookingId,
-      "Confirm Dispatch? This will deduct stock from Inventory.",
-    );
-  };
+  // const handleDispatch = (bookingId) => {
+  //   openConfirmModal(
+  //     "dispatch",
+  //     bookingId,
+  //     "Confirm Dispatch? This will deduct stock from Inventory.",
+  //   );
+  // };
 
   const handleCancel = (bookingId) => {
     openConfirmModal(
@@ -228,12 +227,12 @@ const Bookings = () => {
                 <td className="p-4 flex justify-center gap-2">
                   {booking.status === "CONFIRMED" && (
                     <>
-                      <button
+                      {/* <button
                         onClick={() => handleDispatch(booking.booking_id)}
                         title="Dispatch Order"
                         className="p-2 text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200">
                         <Truck size={18} />
-                      </button>
+                      </button> */}
                       <Link
                         to={`/admin/bookings/edit/${booking.booking_id}`}
                         className="p-2 text-yellow-700 hover:bg-yellow-50 rounded-lg border border-transparent hover:border-yellow-200"
@@ -242,14 +241,15 @@ const Bookings = () => {
                       </Link>
                     </>
                   )}
-                  {booking.status !== "CANCELLED" && (
-                    <button
-                      onClick={() => handleCancel(booking.booking_id)}
-                      title="Cancel Booking"
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
-                      <XCircle size={18} />
-                    </button>
-                  )}
+                  {booking.status !== "CANCELLED" &&
+                    booking.status !== "COMPLETED" && (
+                      <button
+                        onClick={() => handleCancel(booking.booking_id)}
+                        title="Cancel Booking"
+                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
+                        <XCircle size={18} />
+                      </button>
+                    )}
                   <button
                     onClick={() => handleViewDetails(booking.booking_id)}
                     className="p-2 text-gray-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg"
