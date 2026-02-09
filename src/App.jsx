@@ -8,7 +8,7 @@ import CreateBookings from "./pages/CreateBookings";
 import Inventory from "./pages/Inventory";
 import AdminLayout from "./AdminLayout";
 import EditBooking from "./pages/EditBooking";
-import LogisticsDashboard from "./pages/logisticsDashboard";
+import LogisticsDashboard from "./paages/LogisticsDashboard";
 import Reports from "./pages/Reports";
 import UserManagement from "./pages/UserManagement";
 import Vendors from "./pages/Vendors";
