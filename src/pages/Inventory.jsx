@@ -178,75 +178,93 @@ const Inventory = () => {
         />
       </div>
 
-      {/* TABLE */}
+      {/* --- TABLE --- */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-gray-50 border-b border-gray-100">
-            <tr>
-              <th className="p-4 font-semibold text-gray-600">Product Name</th>
-              <th className="p-4 font-semibold text-gray-600">Brand</th>
-              <th className="p-4 font-semibold text-gray-600">Dimension</th>
-              <th className="p-4 font-semibold text-gray-600">Current Stock</th>
-              <th className="p-4 font-semibold text-gray-600">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {filteredProducts.map((product) => (
-              <tr
-                key={product.id}
-                className="hover:bg-gray-50 group">
-                <td className="p-4 font-medium text-gray-900">
-                  {product.product_name}
-                </td>
-                <td className="p-4 text-gray-600">{product.brand}</td>
-                <td className="p-4 text-gray-600">
-                  <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-bold">
-                    {product.type_or_dimension}
-                  </span>
-                </td>
-                <td className="p-4">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`font-bold ${product.current_stock_tons < 10 ? "text-red-600" : "text-green-600"}`}>
-                      {product.current_stock_tons} Tons
-                    </span>
-                    {product.current_stock_tons < 10 && (
-                      <AlertTriangle
-                        size={16}
-                        className="text-red-500"
-                      />
-                    )}
-                  </div>
-                </td>
-                <td className="p-4 flex items-center gap-2">
-                  {/* Restock Button */}
-                  <button
-                    onClick={() => openRestockModal(product)}
-                    title="Add Stock"
-                    className="text-green-600 hover:bg-green-50 p-2 rounded transition">
-                    <ArrowDownCircle size={18} />
-                  </button>
-
-                  {/* Edit Button (Metadata Only) */}
-                  <button
-                    onClick={() => openEditModal(product)}
-                    title="Edit Name/Brand"
-                    className="text-blue-600 hover:text-blue-900 hover:bg-blue-50 p-2 rounded transition">
-                    <Pencil size={18} />
-                  </button>
-
-                  {/* Delete Button */}
-                  <button
-                    onClick={() => handleDelete(product.id)}
-                    title="Delete Product"
-                    className="text-red-600 hover:text-red-900 hover:bg-red-50 p-2 rounded transition">
-                    <Trash2 size={18} />
-                  </button>
-                </td>
+        {/* 🔥 1. Added Scroll Wrapper */}
+        <div className="overflow-x-auto">
+          {/* 🔥 2. Added min-w-[800px] to force horizontal scrolling on mobile */}
+          <table className="w-full text-left min-w-200">
+            <thead className="bg-gray-50 border-b border-gray-100">
+              <tr>
+                {/* 🔥 3. Added whitespace-nowrap to all headers */}
+                <th className="p-4 font-semibold text-gray-600 whitespace-nowrap">
+                  Product Name
+                </th>
+                <th className="p-4 font-semibold text-gray-600 whitespace-nowrap">
+                  Brand
+                </th>
+                <th className="p-4 font-semibold text-gray-600 whitespace-nowrap">
+                  Dimension
+                </th>
+                <th className="p-4 font-semibold text-gray-600 whitespace-nowrap">
+                  Current Stock
+                </th>
+                <th className="p-4 font-semibold text-gray-600 whitespace-nowrap">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {filteredProducts.map((product) => (
+                <tr
+                  key={product.id}
+                  className="hover:bg-gray-50 group">
+                  {/* 🔥 4. Added whitespace-nowrap to data cells */}
+                  <td className="p-4 font-medium text-gray-900 whitespace-nowrap">
+                    {product.product_name}
+                  </td>
+                  <td className="p-4 text-gray-600 whitespace-nowrap">
+                    {product.brand}
+                  </td>
+                  <td className="p-4 text-gray-600 whitespace-nowrap">
+                    <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-bold">
+                      {product.type_or_dimension}
+                    </span>
+                  </td>
+                  <td className="p-4 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`font-bold ${product.current_stock_tons < 10 ? "text-red-600" : "text-green-600"}`}>
+                        {product.current_stock_tons} Tons
+                      </span>
+                      {product.current_stock_tons < 10 && (
+                        <AlertTriangle
+                          size={16}
+                          className="text-red-500"
+                        />
+                      )}
+                    </div>
+                  </td>
+                  <td className="p-4 flex items-center gap-2 whitespace-nowrap">
+                    {/* Restock Button */}
+                    <button
+                      onClick={() => openRestockModal(product)}
+                      title="Add Stock"
+                      className="text-green-600 hover:bg-green-50 p-2 rounded transition">
+                      <ArrowDownCircle size={18} />
+                    </button>
+
+                    {/* Edit Button (Metadata Only) */}
+                    <button
+                      onClick={() => openEditModal(product)}
+                      title="Edit Name/Brand"
+                      className="text-blue-600 hover:text-blue-900 hover:bg-blue-50 p-2 rounded transition">
+                      <Pencil size={18} />
+                    </button>
+
+                    {/* Delete Button */}
+                    <button
+                      onClick={() => handleDelete(product.id)}
+                      title="Delete Product"
+                      className="text-red-600 hover:text-red-900 hover:bg-red-50 p-2 rounded transition">
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* --- REUSABLE PRODUCT MODAL (Add & Edit) --- */}

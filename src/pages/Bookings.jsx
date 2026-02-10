@@ -148,128 +148,132 @@ const Bookings = () => {
 
       {/* --- TABLE --- */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-gray-100 border-b border-gray-200">
-            <tr>
-              <th className="p-4 font-bold text-gray-800">Order ID</th>
-              <th className="p-4 font-bold text-gray-800">Date</th>
-              <th className="p-4 font-bold text-gray-800">Client / Vendor</th>
-              <th className="p-4 font-bold text-gray-800 text-right">
-                Total Amount
-              </th>
-              <th className="p-4 font-bold text-gray-800 text-center">
-                <div className="flex items-center justify-center gap-2">
-                  <span>Status</span>
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-2 py-1 text-sm border border-gray-300 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer font-semibold">
-                    <option value="">All</option>
-                    <option value="CONFIRMED">Confirmed</option>
-                    <option value="PARTIAL">Partial</option>
-                    <option value="COMPLETED">Completed</option>
-                    <option value="CANCELLED">Cancelled</option>
-                  </select>
-                </div>
-              </th>
-              <th className="p-4 font-bold text-gray-800 text-center">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {filteredBookings.map((booking) => (
-              <tr
-                key={booking.booking_id}
-                className="hover:bg-gray-50 transition">
-                <td className="p-4 font-mono text-blue-700 font-bold">
-                  #{booking.booking_id}
-                </td>
-                <td className="p-4 text-sm text-gray-700 font-medium">
-                  <div className="flex items-center gap-2">
-                    <Calendar
-                      size={14}
-                      className="text-gray-500"
-                    />
-                    {new Date(booking.booking_date).toLocaleDateString(
-                      "en-IN",
-                      {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      },
-                    )}
-                  </div>
-                </td>
-                <td className="p-4 font-medium text-gray-900">
-                  {booking.vendor_name}
-                  <div className="text-xs text-gray-500 font-semibold">
-                    By: {booking.booked_by || "Admin"}
-                  </div>
-                </td>
-                <td className="p-4 text-right font-bold text-gray-900">
-                  ₹ {parseFloat(booking.total_amount).toLocaleString("en-IN")}
-                </td>
-                <td className="p-4 text-center">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-bold ${
-                      booking.status === "CONFIRMED"
-                        ? "bg-green-100 text-green-800"
-                        : booking.status === "CANCELLED"
-                          ? "bg-red-100 text-red-800"
-                          : booking.status === "COMPLETED"
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-gray-200 text-gray-800"
-                    }`}>
-                    {booking.status}
-                  </span>
-                </td>
-                <td className="p-4 flex justify-center gap-2">
-                  {booking.status === "CONFIRMED" && (
-                    <>
-                      {/* <button
-                        onClick={() => handleDispatch(booking.booking_id)}
-                        title="Dispatch Order"
-                        className="p-2 text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg border border-blue-200">
-                        <Truck size={18} />
-                      </button> */}
-                      <Link
-                        to={`/admin/bookings/edit/${booking.booking_id}`}
-                        className="p-2 text-yellow-700 hover:bg-yellow-50 rounded-lg border border-transparent hover:border-yellow-200"
-                        title="Edit Order">
-                        <Pencil size={18} />
-                      </Link>
-                    </>
-                  )}
-                  {booking.status !== "CANCELLED" &&
-                    booking.status !== "COMPLETED" && (
-                      <button
-                        onClick={() => handleCancel(booking.booking_id)}
-                        title="Cancel Booking"
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
-                        <XCircle size={18} />
-                      </button>
-                    )}
-                  <button
-                    onClick={() => handleViewDetails(booking.booking_id)}
-                    className="p-2 text-gray-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg"
-                    title="View Full Details">
-                    <FileText size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {filteredBookings.length === 0 && (
+        {/* 🔥 THE FIX: Added this wrapper div for scrolling */}
+        <div className="overflow-x-auto">
+          {/* Added 'min-w-[800px]' so the table keeps its shape on mobile and triggers scrolling */}
+          <table className="w-full text-left border-collapse min-w-200 md:min-w-full">
+            <thead className="bg-gray-100 border-b border-gray-200">
               <tr>
-                <td
-                  colSpan="6"
-                  className="p-8 text-center text-gray-500">
-                  No bookings found matching your search.
-                </td>
+                <th className="p-4 font-bold text-gray-800 whitespace-nowrap">
+                  Order ID
+                </th>
+                <th className="p-4 font-bold text-gray-800 whitespace-nowrap">
+                  Date
+                </th>
+                <th className="p-4 font-bold text-gray-800 whitespace-nowrap">
+                  Client / Vendor
+                </th>
+                <th className="p-4 font-bold text-gray-800 text-right whitespace-nowrap">
+                  Total Amount
+                </th>
+                <th className="p-4 font-bold text-gray-800 text-center whitespace-nowrap">
+                  <div className="flex items-center justify-center gap-2">
+                    <span>Status</span>
+                    <select
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
+                      className="px-2 py-1 text-sm border border-gray-300 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer font-semibold">
+                      <option value="">All</option>
+                      <option value="CONFIRMED">Confirmed</option>
+                      <option value="PARTIAL">Partial</option>
+                      <option value="COMPLETED">Completed</option>
+                      <option value="CANCELLED">Cancelled</option>
+                    </select>
+                  </div>
+                </th>
+                <th className="p-4 font-bold text-gray-800 text-center whitespace-nowrap">
+                  Actions
+                </th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {filteredBookings.map((booking) => (
+                <tr
+                  key={booking.booking_id}
+                  className="hover:bg-gray-50 transition">
+                  <td className="p-4 font-mono text-blue-700 font-bold whitespace-nowrap">
+                    #{booking.booking_id}
+                  </td>
+                  <td className="p-4 text-sm text-gray-700 font-medium whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <Calendar
+                        size={14}
+                        className="text-gray-500"
+                      />
+                      {new Date(booking.booking_date).toLocaleDateString(
+                        "en-IN",
+                        {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        },
+                      )}
+                    </div>
+                  </td>
+                  <td className="p-4 font-medium text-gray-900 whitespace-nowrap">
+                    {booking.vendor_name}
+                    <div className="text-xs text-gray-500 font-semibold">
+                      By: {booking.booked_by || "Admin"}
+                    </div>
+                  </td>
+                  <td className="p-4 text-right font-bold text-gray-900 whitespace-nowrap">
+                    ₹ {parseFloat(booking.total_amount).toLocaleString("en-IN")}
+                  </td>
+                  <td className="p-4 text-center whitespace-nowrap">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-bold ${
+                        booking.status === "CONFIRMED"
+                          ? "bg-green-100 text-green-800"
+                          : booking.status === "CANCELLED"
+                            ? "bg-red-100 text-red-800"
+                            : booking.status === "COMPLETED"
+                              ? "bg-blue-100 text-blue-800"
+                              : "bg-gray-200 text-gray-800"
+                      }`}>
+                      {booking.status}
+                    </span>
+                  </td>
+                  <td className="p-4 flex justify-center gap-2 whitespace-nowrap">
+                    {booking.status === "CONFIRMED" && (
+                      <>
+                        <Link
+                          to={`/admin/bookings/edit/${booking.booking_id}`}
+                          className="p-2 text-yellow-700 hover:bg-yellow-50 rounded-lg border border-transparent hover:border-yellow-200"
+                          title="Edit Order">
+                          <Pencil size={18} />
+                        </Link>
+                      </>
+                    )}
+                    {booking.status !== "CANCELLED" &&
+                      booking.status !== "COMPLETED" && (
+                        <button
+                          onClick={() => handleCancel(booking.booking_id)}
+                          title="Cancel Booking"
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg">
+                          <XCircle size={18} />
+                        </button>
+                      )}
+                    <button
+                      onClick={() => handleViewDetails(booking.booking_id)}
+                      className="p-2 text-gray-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg"
+                      title="View Full Details">
+                      <FileText size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {filteredBookings.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="6"
+                    className="p-8 text-center text-gray-500">
+                    No bookings found matching your search.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* --- CONFIRMATION MODAL --- */}
